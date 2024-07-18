@@ -13,19 +13,22 @@ var messageBus = builder
 
 var usersDb = builder
     .AddPostgres("dbserver", pAdmin, password)
-    .WithDataVolume()
+    //.WithDataVolume()
+    .WithDataBindMount("../../volumes/PostgresUsersDb")
     .WithPgAdmin(c => c.WithHostPort(5050))
     .AddDatabase("users-db");
 
 var postsDb = builder
     .AddMongoDB("posts-mongodb")
-    .WithDataVolume()
+    //.WithDataVolume()
+    .WithDataBindMount("../../volumes/MongoDbPostsDb")
     .WithMongoExpress(c => c.WithHostPort(8081))
     .AddDatabase("posts-db");
 
 var elastic = builder
     .AddElasticsearch("elasticsearch", password, port: 9200)
-    .WithDataVolume();
+    //.WithDataVolume()
+    .WithDataBindMount("../../volumes/Elasticsearch");
 
 var api = builder
     .AddProject<Projects.Api>("api")
